@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { BarChart3, CalendarDays, Check, ExternalLink, Plus, Share2, Trophy, Users, X } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 const WORDLE_URL = 'https://www.nytimes.com/games/wordle/index.html';
 const SUPABASE_URL = 'https://chmnilzefoczyvckdwer.supabase.co';
@@ -86,5 +87,6 @@ export default function App() {
     <button className="add-button" onClick={()=>{setError('');setShowForm(true)}}><Plus/>Enter today’s score</button>
     {showForm&&<div className="overlay" onMouseDown={()=>setShowForm(false)}><div className="modal" onMouseDown={e=>e.stopPropagation()}><button className="close" onClick={()=>setShowForm(false)}><X/></button><small>Today’s Wordle</small><h2>Enter your score</h2><form onSubmit={submit}><label>Name<input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" maxLength={30} required/></label><fieldset><legend>How many guesses?</legend><div className="choices">{[1,2,3,4,5,6,'X'].map(n=><button type="button" className={score===String(n)?'selected':''} key={n} onClick={()=>setScore(String(n))}>{n}</button>)}</div><p>X means the word wasn’t solved in six guesses.</p></fieldset><label>Date<input type="date" value={date} max={today} onChange={e=>setDate(e.target.value)} required/></label>{error&&<p className="error">{error}</p>}<button className="save" disabled={!name.trim()||!score||saving}>{saving?'Saving…':'Save score'}</button></form></div></div>}
     {copied&&<div className="toast">Link copied</div>}
+    <Analytics />
   </div>;
 }
